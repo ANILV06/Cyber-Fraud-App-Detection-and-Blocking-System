@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cyber Fraud URL Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- 🔝 Navbar -->
+<nav class="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="/">🌐 Cyber Fraud Detector</a>
+        <ul class="nav-links">
+            <li><a href="/">🏠 Home</a></li>
+            <li><a href="/dashboard">📊 Detection Logs</a></li>
+            <li><a href="/admin-login">🔐 Admin Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- 🧠 Main Section -->
+<div class="main-container">
+    <h2 class="heading">🔍 Cyber Fraud Web-App Detection</h2>
+
+    <form method="POST" action="/" class="url-form">
+        <input type="text" name="url" placeholder="Enter URL here..." required>
+        <button type="submit">Check</button>
+    </form>
+
+    {% if message %}
+    <div class="result-box 
+        {% if 'Fraud' in message %}
+            result-danger
+        {% elif 'Blocked' in message %}
+            result-blocked
+        {% else %}
+            result-success
+        {% endif %}">
+        {{ message }}
+    </div>
+    {% endif %}
+
+    {% if notification %}
+    <div class="notification">{{ notification }}</div>
+    {% endif %}
+</div>
+
+<!-- ✅ Hidden Auto Submit Form -->
+<form id="popupForm" method="POST" action="{{ url_for('submit_email_request') }}" style="display: none;">
+    <input type="hidden" name="user_name" id="hiddenName">
+    <input type="hidden" name="user_email" id="hiddenEmail">
+    <input type="hidden" name="url" value="{{ url_to_report }}">
+</form>
+
+{% if show_email_form %}
+<script>
+    setTimeout(function () {
+        let name = prompt("⚠️ This URL looks suspicious.\nEnter your name to notify admin:");
+        if (name !== null && name.trim() !== "") {
+            let email = prompt("Enter your email:");
+            if (email !== null && email.trim() !== "") {
+                document.getElementById("hiddenName").value = name.trim();
+                document.getElementById("hiddenEmail").value = email.trim();
+                document.getElementById("popupForm").submit();
+            }
+        }
+    }, 500);
+</script>
+{% endif %}
+
+<!-- 🔚 Footer -->
+<footer>
+    <div class="footer-icons">
+        <a href="mailto:anildp2001@gmail.com">📧</a>
+        <a href="tel:+919901091750">📞</a>
+        <a href="https://www.instagram.com/__ani.rahu__" target="_blank">📷</a>
+        <a href="https://www.linkedin.com/in/anil-v-430b44309" target="_blank">🔗</a>
+        <a href="https://github.com/ANILV06" target="_blank">🐱</a>
+    </div>
+</footer>
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+</body>
+</html>

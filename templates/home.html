@@ -1,0 +1,89 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Fraud Shield</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0f172a;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .shield-icon {
+      font-size: 60px;
+      margin-top: 2rem;
+      color: #00bfff;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-top: 1rem;
+    }
+
+    p {
+      color: #94a3b8;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 2rem;
+    }
+
+    .button {
+      background-color: #1e293b;
+      padding: 1.2rem;
+      border-radius: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background-color: #2563eb;
+    }
+
+    .summary {
+      background-color: #1e293b;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem;
+    }
+
+    .summary p {
+      margin: 0.4rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shield-icon">🛡️</div>
+  <h1>Cyber Fraud Shield</h1>
+  <p>Stay Smart. Stay Secure.</p>
+  <h2>Welcome</h2>
+
+  <div class="button-grid">
+<a href="{{ url_for('index') }}" class="button">🔍 Scan Apps</a>
+    <a href="/dashboard" class="button">📊 Risk Report</a>
+    <a href="/admin-login" class="button">🔐 Admin Login</a>
+    <a href="#" class="button">🧠 ML Detection</a>
+  </div>
+
+  <div class="summary">
+    <h3>Recent Scan Summary</h3>
+    <p>Apps Scanned: 55</p>
+    <p>Detected Threats: 2</p>
+    <p>Last Scan: Today at 11:00 AM</p>
+  </div>
+
+</body>
+</html>

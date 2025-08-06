@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📬 Email Alert Requests</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: radial-gradient(circle at center, #0b1f2a 0%, #000 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em;
+    }
+
+    h2 {
+      font-size: 1.8em;
+      margin-bottom: 1em;
+      color: #61dafb;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      max-width: 1000px;
+      border-collapse: collapse;
+      background-color: rgba(255, 255, 255, 0.03);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.05);
+      border-radius: 0.8em;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 0.8em 1em;
+      text-align: left;
+      border-bottom: 1px solid #2c3e50;
+    }
+
+    thead {
+      background: #007acc;
+    }
+
+    th {
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .alert {
+      background: #ffc107;
+      color: #111;
+      padding: 1em 1.2em;
+      border-radius: 0.5em;
+      font-weight: bold;
+      margin-top: 1em;
+    }
+
+    .btn-back {
+      margin-top: 2em;
+      padding: 0.8em 1.5em;
+      background: #007acc;
+      color: white;
+      border: none;
+      border-radius: 0.4em;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+
+    .btn-back:hover {
+      background: #008eff;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      td {
+        position: relative;
+        padding-left: 50%;
+        border-bottom: 1px solid #2c3e50;
+      }
+
+      td::before {
+        position: absolute;
+        top: 0.8em;
+        left: 1em;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #61dafb;
+      }
+
+      td:nth-of-type(1)::before { content: "Timestamp"; }
+      td:nth-of-type(2)::before { content: "URL"; }
+      td:nth-of-type(3)::before { content: "User Name"; }
+      td:nth-of-type(4)::before { content: "User Email"; }
+    }
+  </style>
+</head>
+<body>
+
+  <h2><i class="fas fa-envelope-open-text"></i> Admin Email Alert Requests</h2>
+
+  {% if requests %}
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>URL</th>
+          <th>User Name</th>
+          <th>User Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in requests %}
+        <tr>
+          <td>{{ r[0] }}</td>
+          <td>{{ r[1] }}</td>
+          <td>{{ r[2] or "—" }}</td>
+          <td>{{ r[3] or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="alert">⚠️ No email requests found.</div>
+  {% endif %}
+
+  <a href="{{ url_for('admin_dashboard') }}" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+
+</body>
+</html>

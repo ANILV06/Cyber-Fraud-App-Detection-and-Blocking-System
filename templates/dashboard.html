@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detection Logs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at center, #0b1f2a 0%, #000 100%);
+      color: #e6f1ff;
+    }
+
+    nav {
+      background-color: #11161e;
+      padding: 1em 2em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #222;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5em;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #61dafb;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2em auto;
+      padding: 1em;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5em;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1em;
+    }
+
+    th, td {
+      padding: 0.8em 1em;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background-color: #007acc;
+      color: white;
+      text-align:start;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .badge {
+      padding: 0.4em 0.7em;
+      border-radius: 0.4em;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .bg-success { background-color: #28a745; color: white; }
+    .bg-danger { background-color: #dc3545; color: white; }
+    .bg-warning { background-color: #ffc107; color: #111; }
+    .bg-secondary { background-color: #6c757d; }
+
+    select, button, a.btn {
+      padding: 0.5em 1em;
+      border: none;
+      border-radius: 6px;
+      margin-right: 0.5em;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    select {
+      background: #222;
+      color: #fff;
+    }
+
+    button.btn-warning {
+      background: #ffc107;
+      color: #111;
+    }
+
+    a.btn-success {
+      background: #28a745;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .text-center { text-align: center; }
+
+    canvas {
+      margin-top: 2em;
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 1em;
+    }
+
+    footer {
+      background: #0c0c0c;
+      color: #aaa;
+      text-align: center;
+      padding: 1.5em 0;
+      font-size: 0.9em;
+    }
+
+    .footer-links a {
+      color: #aaa;
+      margin: 0 10px;
+      font-size: 1.6rem;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: #61dafb;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav a {
+        margin: 0.5em 0;
+      }
+
+      .form-inline {
+        flex-direction: column;
+        gap: 0.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div><a href="/">🌐 Cyber Fraud Detector</a></div>
+  <div>
+    <a href="/">🏠 Home</a>
+    <a href="/dashboard">📊 Logs</a>
+    <a href="/admin-login">🔐 Admin</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h2>📊 Detection Logs</h2>
+
+  <!-- Filter Form -->
+  <form method="GET" action="/dashboard" style="text-align:right; margin-bottom: 1em;">
+    <select name="filter">
+      <option value="">All</option>
+      <option value="safe" {% if filter_type == 'safe' %}selected{% endif %}>✅ Safe</option>
+      <option value="fraud" {% if filter_type == 'fraud' %}selected{% endif %}>🚨 Fraud</option>
+      <option value="Blocked" {% if filter_type == 'Blocked' %}selected{% endif %}>🚫 Blocked</option>
+    </select>
+    <button class="btn-warning">Apply</button>
+    <a href="/download" class="btn btn-success">⬇️ Download CSV</a>
+  </form>
+
+  <!-- Logs Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>URL</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in logs %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+ 
+
+  <!-- Back -->
+  <div class="text-center mt-3">
+    <a href="/" class="btn btn-warning">🔙 Back to Home</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-links">
+    <a href="mailto:anildp2001@gmail.com"><i class="fas fa-envelope"></i></a>
+    <a href="https://www.instagram.com/__ani.rahu__" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.linkedin.com/in/anil-v-430b44309" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+    <a href="https://github.com/ANILV06" target="_blank"><i class="fab fa-github"></i></a>
+  </div>
+  <div>© 2025 Cyber Fraud Shield • Designed by <strong style="color:#61dafb;">ANIL.V</strong></div>
+</footer>
+
+<!-- Pie Chart Script -->
+
+
+</body>
+</html>

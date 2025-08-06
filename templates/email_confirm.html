@@ -1,0 +1,29 @@
+<!-- email_confirm.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🚨 Fraud URL Alert</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-dark text-white container mt-5">
+    <h2>🚨 Suspicious URL Detected</h2>
+    <p class="mb-3">You searched for a suspicious link. If you'd like, notify the admin.</p>
+
+    <form method="POST" class="bg-secondary p-4 rounded">
+        <div class="mb-3">
+            <label class="form-label">URL Detected</label>
+            <input type="text" name="url" class="form-control" value="{{ url }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Your Name (optional)</label>
+            <input type="text" name="name" class="form-control" placeholder="Your name">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Your Email (optional)</label>
+            <input type="email" name="email" class="form-control" placeholder="you@example.com">
+        </div>
+        <button type="submit" class="btn btn-warning">Submit Request to Admin</button>
+        <a href="{{ url_for('home') }}" class="btn btn-outline-light ms-3">Cancel</a>
+    </form>
+</body>
+</html>

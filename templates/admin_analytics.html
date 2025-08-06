@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📊 Admin Threat Analytics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: radial-gradient(circle at center, #0b1f2a 0%, #000 100%);
+      color: white;
+      min-height: 100vh;
+      padding: 2em;
+    }
+
+    h2, h5 {
+      text-align: center;
+      margin-bottom: 1em;
+      color: #61dafb;
+    }
+
+    canvas {
+      background: #1f1f1f;
+      border-radius: 10px;
+      padding: 1em;
+    }
+
+    .chart-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2em;
+      justify-content: center;
+      margin-top: 2em;
+    }
+
+    .chart-col {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+
+    .btn-back {
+      margin-top: 2em;
+      display: inline-block;
+      background-color: #007acc;
+      color: white;
+      padding: 0.8em 1.5em;
+      text-decoration: none;
+      border-radius: 0.4em;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .btn-back:hover {
+      background-color: #008eff;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📈 Daily Threat Analytics</h2>
+
+  <!-- Line Chart -->
+  <canvas id="threatLineChart" height="100"></canvas>
+
+  <!-- Bar & Pie Charts Side-by-Side -->
+  <div class="chart-row">
+    <div class="chart-col">
+      <h5>📊 Daily Safe / Fraud / Blocked</h5>
+      <canvas id="barChart" height="300"></canvas>
+    </div>
+    <div class="chart-col">
+      <h5>📌 Overall Threat Distribution (%)</h5>
+      <canvas id="pieChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <a href="{{ url_for('admin_dashboard') }}" class="btn-back">⬅ Back to Admin Dashboard</a>
+  </div>
+
+  <!-- Chart Logic -->
+  <script>
+    const dates = {{ dates|tojson }};
+    const safeData = {{ safe_data|tojson }};
+    const fraudData = {{ fraud_data|tojson }};
+    const blockedData = {{ blocked_data|tojson }};
+    const totalSafe = {{ total_safe }};
+    const totalFraud = {{ total_fraud }};
+    const totalBlocked = {{ total_blocked }};
+
+    // Line Chart
+    new Chart(document.getElementById('threatLineChart'), {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [
+          {
+            label: '✅ Safe',
+            data: safeData,
+            borderColor: 'green',
+            backgroundColor: 'rgba(0,255,0,0.2)',
+            fill: true
+          },
+          {
+            label: '🚨 Fraud',
+            data: fraudData,
+            borderColor: 'red',
+            backgroundColor: 'rgba(255,0,0,0.2)',
+            fill: true
+          },
+          {
+            label: '🚫 Blocked',
+            data: blockedData,
+            borderColor: 'orange',
+            backgroundColor: 'rgba(255,165,0,0.2)',
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Daily Safe, Fraud, and Blocked Counts',
+            font: { size: 18 }
+          },
+          legend: { position: 'top' }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Count' }
+          },
+          x: {
+            title: { display: true, text: 'Date' }
+          }
+        }
+      }
+    });
+
+    // Bar Chart
+    new Chart(document.getElementById('barChart'), {
+      type: 'bar',
+      data: {
+        labels: dates,
+        datasets: [
+          {
+            label: '✅ Safe',
+            data: safeData,
+            backgroundColor: 'green'
+          },
+          {
+            label: '🚨 Fraud',
+            data: fraudData,
+            backgroundColor: 'red'
+          },
+          {
+            label: '🚫 Blocked',
+            data: blockedData,
+            backgroundColor: 'orange'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Daily Threat Activity',
+            font: { size: 18 }
+          },
+          legend: { position: 'top' }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    // Pie Chart with Percentages
+    new Chart(document.getElementById('pieChart'), {
+      type: 'pie',
+      data: {
+        labels: ['✅ Safe', '🚨 Fraud', '🚫 Blocked'],
+        datasets: [{
+          data: [totalSafe, totalFraud, totalBlocked],
+          backgroundColor: ['green', 'red', 'orange']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          datalabels: {
+            formatter: (value, ctx) => {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const percent = ((value / total) * 100).toFixed(0);
+              return percent + '%';
+            },
+            color: '#fff',
+            font: { weight: 'bold', size: 14 }
+          },
+          legend: { position: 'bottom' }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  </script>
+
+</body>
+</html>

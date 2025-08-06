@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at center, #0b1f2a 0%, #000 100%);
+      color: #e6f1ff;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      background: #11161e;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 2em 1em;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 8px #0ff3;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #aee1ff;
+      margin: 0.5em 0;
+      font-weight: bold;
+      padding: 0.6em;
+      border-radius: 0.4em;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      background: #007acc;
+      color: #fff;
+    }
+
+    .content {
+      margin-left: 260px;
+      padding: 2em;
+    }
+
+    /* Summary Cards */
+    .summary-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-card {
+      flex: 1;
+      min-width: 200px;
+      padding: 1.5rem;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px #0ff4;
+      color: #e6f1ff;
+      text-align: center;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .card-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 20px #0ff;
+    }
+
+    .card-card .icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-card .label {
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .card-card .count {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+
+    .card-card.safe .icon,
+    .card-card.safe { color: #28f178; }
+
+    .card-card.fraud .icon,
+    .card-card.fraud { color: #ffc107; }
+
+    .card-card.blocked .icon,
+    .card-card.blocked { color: #ff4f4f; }
+
+    .card-card.total .icon,
+    .card-card.total { color: #0dcaf0; }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5em;
+      border-radius: 12px;
+      margin-bottom: 1.5em;
+      box-shadow: 0 4px 10px #0ff2;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1em;
+      font-size: 0.95em;
+    }
+
+    table th, table td {
+      padding: 0.75em 1em;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+
+    table thead {
+      background: #007acc;
+      color: #fff;
+    }
+
+    .badge {
+      padding: 0.4em 0.8em;
+      border-radius: 0.3em;
+      font-weight: bold;
+      font-size: 0.85em;
+    }
+
+    .badge.bg-success { background-color: #28a745; color: white; }
+    .badge.bg-danger { background-color: #dc3545; color: white; }
+    .badge.bg-warning { background-color: #ffc107; color: black; }
+    .badge.bg-secondary { background-color: #6c757d; }
+
+    .btn {
+      padding: 0.4em 0.8em;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-outline-danger {
+      border: 1px solid #dc3545;
+      color: #dc3545;
+      background: transparent;
+    }
+
+    .btn-outline-danger:hover {
+      background: #dc3545;
+      color: white;
+    }
+
+    ul.list-group {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    ul.list-group li {
+      background: #1e2a3a;
+      color: #d0e7ff;
+      padding: 0.7em 1em;
+      border-bottom: 1px solid #0f1a25;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .scroll-table {
+      max-height: 380px;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      .content {
+        margin-left: 0;
+        padding: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔐 Sidebar -->
+  <div class="sidebar">
+    <a href="/dashboard" class="active">📊 Dashboard</a>
+    <a href="{{ url_for('view_email_requests') }}">📬 Email Requests</a>
+    <a href="#Logs-Table">🕵 Logs Table</a>
+    <a href="#blocked-list">⛔ Blocked Domains</a>
+    <a href="/admin/analytics">📈 Analytics</a>
+    <a href="/logout">🔓 Logout</a>
+  </div>
+
+  <!-- 📋 Main Content -->
+  <div class="content">
+
+    <!-- ✅ Updated Cards -->
+    <div class="summary-cards">
+      <a href="{{ url_for('view_filtered_logs', filter_type='total') }}" class="card-card total">
+        <div class="icon"><i class="fas fa-database"></i></div>
+        <div class="label">Total Scans</div>
+        <div class="count">{{ stats.total }}</div>
+      </a>
+      <a href="{{ url_for('view_filtered_logs', filter_type='safe') }}" class="card-card safe">
+        <div class="icon"><i class="fas fa-shield-check"></i></div>
+        <div class="label">Safe</div>
+        <div class="count">{{ stats.safe }}</div>
+      </a>
+      <a href="{{ url_for('view_filtered_logs', filter_type='fraud') }}" class="card-card fraud">
+        <div class="icon"><i class="fas fa-bug"></i></div>
+        <div class="label">Fraud</div>
+        <div class="count">{{ stats.fraud }}</div>
+      </a>
+      <a href="{{ url_for('view_filtered_logs', filter_type='blocked') }}" class="card-card blocked">
+        <div class="icon"><i class="fas fa-ban"></i></div>
+        <div class="label">Blocked</div>
+        <div class="count">{{ stats.blocked }}</div>
+      </a>
+    </div>
+
+    <!-- 🧾 Logs Table -->
+    <div class="card" id="Logs-Table">
+      <h5>🕵️ Recent Detections</h5>
+      <div class="scroll-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>URL</th>
+              <th>Result</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in logs[:10] %}
+            <tr>
+              <td>{{ row[0] }}</td>
+              <td>{{ row[1] }}</td>
+              <td>{{ row[2] }}</td>
+              <td>
+                {% set result = row[2]|lower %}
+                {% if row[1] in blocked_domains %}
+                  <span class="badge bg-danger">Blocked</span>
+                {% elif 'fraud' in result or '🚨' in result %}
+                  <span class="badge bg-warning text-dark">Fraud</span>
+                {% elif 'safe' in result or '✅' in result %}
+                  <span class="badge bg-success">Safe</span>
+                {% else %}
+                  <span class="badge bg-secondary">Unknown</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if 'fraud' in result or '🚨' in result %}
+                  {% if row[1] not in blocked_domains %}
+                    <form method="POST" action="{{ url_for('admin_block') }}">
+                      <input type="hidden" name="domain" value="{{ row[1] }}">
+                      <button type="submit" class="btn btn-danger btn-sm">Block</button>
+                    </form>
+                  {% else %}
+                    <span class="text-muted">—</span>
+                  {% endif %}
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ⛔ Blocked List -->
+    <div class="card" id="blocked-list">
+      <h5>⛔ Currently Blocked Domains</h5>
+      <ul class="list-group">
+        {% for domain in blocked_domains %}
+        <li>
+          {{ domain }}
+          <form method="POST" action="/admin/unblock">
+            <input type="hidden" name="domain" value="{{ domain }}">
+            <button class="btn btn-outline-danger btn-sm">Unblock</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login | Cyber Fraud Shield</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: radial-gradient(circle at center, #0b1f2a 0%, #000 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2em;
+      border-radius: 1em;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.05);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 1em;
+      font-weight: 600;
+    }
+
+    .login-container h2 i {
+      margin-right: 10px;
+      color: #61dafb;
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.5em;
+      margin-top: 1em;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.8em;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 0.5em;
+      color: #fff;
+      font-size: 1em;
+    }
+
+    input:focus {
+      border-color: #61dafb;
+      outline: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.9em;
+      background: #007acc;
+      border: none;
+      color: white;
+      font-size: 1em;
+      font-weight: bold;
+      border-radius: 0.5em;
+      margin-top: 1.5em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #008eff;
+    }
+
+    .alert {
+      margin-top: 1em;
+      padding: 0.8em;
+      border-radius: 0.5em;
+      font-size: 0.95em;
+    }
+
+    .alert-success {
+      background: #198754;
+      color: white;
+    }
+
+    .alert-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 1.2em;
+      }
+
+      .login-container h2 {
+        font-size: 1.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2><i class="fas fa-user-shield"></i>Admin Login</h2>
+
+    <form method="POST">
+      <label for="username"><i class="fas fa-user"></i> Username</label>
+      <input type="text" name="username" id="username" required>
+
+      <label for="password"><i class="fas fa-lock"></i> Password</label>
+      <input type="password" name="password" id="password" required>
+
+      
+
+      <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+    </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+:root {
+  --dark-bg: #0f1115;
+  --card-bg: #1c1f26;
+  --accent: #16f0ab;
+  --text-color: #e4e4e4;
+  --light: #d1d1d1;
+  --font-main: 'Inter', sans-serif;
+  --font-head: 'Bebas Neue', cursive;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: var(--dark-bg);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.shield-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.shield-icon {
+  font-size: 52px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--light);
+  margin-bottom: 10px;
+}
+
+.welcome {
+  margin: 5px 0 20px;
+  font-size: 1.3rem;
+  color: white;
+}
+
+.grid-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 25px;
+}
+
+.card-btn {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px;
+  color: var(--text-color);
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 255, 170, 0.1);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.card-btn:hover {
+  background: #252a35;
+  transform: scale(1.03);
+}
+
+.card-btn i {
+  font-size: 24px;
+  margin-bottom: 10px;
+  display: block;
+  color: var(--accent);
+}
+
+.card-btn span {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.summary-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.summary-card h3 {
+  margin-top: 0;
+  color: var(--accent);
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  padding-top: ;
+}

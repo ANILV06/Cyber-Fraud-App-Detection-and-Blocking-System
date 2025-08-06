@@ -1,0 +1,9 @@
+# Blocked domains list
+# One domain per line
+secure-login-update.com
+bankofamerica-update-login.site
+kanbonus.click
+frees.click
+fikfap.com
+alive.ac.in
+freebonus.click

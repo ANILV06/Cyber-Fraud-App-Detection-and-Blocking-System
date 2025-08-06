@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ filter_type }} Logs</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0f172a;
+      color: #e2e8f0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 28px;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .table-container {
+      background-color: #1e293b;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      width: 90%;
+      max-width: 1000px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #334155;
+    }
+
+    th {
+      background-color: #0ea5e9;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background-color: #334155;
+    }
+
+    .no-logs {
+      text-align: center;
+      color: #94a3b8;
+      padding: 20px;
+    }
+
+   .btn-back {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background-color: #0ea5e9;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 0 8px #0ea5e9;
+  transition: background 0.3s ease;
+  z-index: 999;
+}
+
+    .btn-back:hover {
+      background-color: #0284c7;
+    }
+
+    @media screen and (max-width: 768px) {
+      th, td {
+        padding: 10px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      .table-container {
+        padding: 12px;
+      }
+
+      .btn-back {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="{{ url_for('admin_dashboard') }}" class="btn-back">🔙 Back to Dashboard</a>
+  <h2>📜 {{ filter_type | capitalize }} Logs</h2>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>URL</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if logs %}
+          {% for row in logs %}
+          <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="3" class="no-logs">No logs found for "{{ filter_type }}"</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  
+</body>
+</html>
